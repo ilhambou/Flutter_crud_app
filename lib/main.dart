@@ -6,9 +6,6 @@ import 'firebase_options.dart';
 import 'screens/controle.page.dart';
 
 
-
-
-
 Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -95,8 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     return user;
   }
-
-  @override
+ @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(16.0),
@@ -104,14 +100,6 @@ class _LoginScreenState extends State<LoginScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "My App Title",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 28.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
           const Text(
             "  Login To Your App",
             style: TextStyle(
@@ -145,10 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(
             height: 12.0,
           ),
-          const Text(
-            "Don't Remember Your Password?",
-            style: TextStyle(color: Colors.blue),
-          ),
+         
           const SizedBox(
             height: 88.0,
           ),
@@ -183,16 +168,28 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => RegisterScreen()),
-              );
-            },
-            child: const Text('Register'),
-          ),
+          signUpOption(),
         ],
       ),
+    );
+  }
+
+  Row signUpOption() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Don't have an account?"), 
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => RegisterScreen()));
+          },
+          child: const Text(
+            " Sign Up",
+            style: TextStyle(color: Color.fromARGB(255, 61, 91, 211), fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
     );
   }
 }

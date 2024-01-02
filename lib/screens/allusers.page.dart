@@ -15,7 +15,7 @@ class _AllUsersState extends State<AllUsers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder<QuerySnapshot>(
+      body: StreamBuilder<QuerySnapshot>( //dr interface en fct des modif li f firebase ////// FutureBuildeer
         stream: FirebaseFirestore.instance.collection('users').orderBy('name').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -29,7 +29,7 @@ class _AllUsersState extends State<AllUsers> {
 
             return ListUserss(users: allUsers);
           } else {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator()); // en cours
           }
         },
       ),

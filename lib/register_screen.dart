@@ -1,8 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'screens/controle.page.dart';
-//
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -24,23 +22,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       if (userCredential.user != null) {
-        // Registration successful, navigate to the ProfileScreen
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => ControlPage()),
-        );
+        navigateToControlPage();
       }
     } on FirebaseAuthException catch (e) {
-      // Handle registration errors (if any)
-      if (e.code == 'weak-password') {
-        // Show a snackbar or dialog for weak password
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        // Show a snackbar or dialog for email already in use
-        print('The account already exists for that email.');
-      }
+      handleRegistrationError(e);
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  void navigateToControlPage() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => ControlPage()),
+    );
+  }
+
+  void handleRegistrationError(FirebaseAuthException e) {
+    if (e.code == 'weak-password') {
+      showSnackbar('The password provided is too weak.');
+    } else if (e.code == 'email-already-in-use') {
+      showSnackbar('The account already exists for that email.');
+    }
+  }
+
+  void showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
   }
 
   @override
@@ -64,29 +74,56 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
             const SizedBox(height: 44.0),
-            TextField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                hintText: "Enter Email",
-                prefixIcon: Icon(Icons.mail, color: Colors.black),
-              ),
-            ),
+            buildEmailTextField(),
             const SizedBox(height: 26.0),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                hintText: "Enter Password",
-                prefixIcon: Icon(Icons.lock, color: Colors.black),
-              ),
-            ),
+            buildPasswordTextField(),
             const SizedBox(height: 26.0),
-            ElevatedButton(
-              onPressed: registerUser,
-              child: const Text('Register'),
-            ),
+            buildRegisterButton(),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildEmailTextField() {
+    return TextField(
+      controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
+      decoration: const InputDecoration(
+        hintText: "Enter Email",
+        prefixIcon: Icon(Icons.mail, color: Colors.black),
+      ),
+    );
+  }
+
+  Widget buildPasswordTextField() {
+    return TextField(
+      controller: _passwordController,
+      obscureText: true,
+      decoration: const InputDecoration(
+        hintText: "Enter Password",
+        prefixIcon: Icon(Icons.lock, color: Colors.black),
+      ),
+    );
+  }
+
+  Widget buildRegisterButton() {
+    return Container(
+      width: double.infinity,
+      child: RawMaterialButton(
+        fillColor: const Color(0xFF0069FE),
+        elevation: 0.0,
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        onPressed: registerUser,
+        child: const Text(
+          "Register",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
+          ),
         ),
       ),
     );

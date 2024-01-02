@@ -3,8 +3,6 @@ import 'package:crud_app/repository/user.repo.dart';
 import 'package:crud_app/model/user.model.dart';
 import '../model/user.model.dart';
 
-
-
 class AddUserPage extends StatelessWidget {
   const AddUserPage({Key? key}) : super(key: key);
 
@@ -18,7 +16,7 @@ class AddUserPage extends StatelessWidget {
         title: Text('Add user'),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10), //marge de 10pixels
         child: Column(
           children: [
             SizedBox(height: 20),
